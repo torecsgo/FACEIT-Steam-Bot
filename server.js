@@ -28,7 +28,16 @@ client.on('loggedOn', async() => {
 client.on('friendMessage', async function(steamID, message) {
     const [comando, argumento] = message.split(' ');
     if (comando === "!faceit") {
-        require("./comandos/faceit").obtenerPlayerElo(steamID, argumento);
+        let resultado;
+        try {
+            const elo = await faceit_utils.obtenerElo(argumento);
+            const cs2 = elo.cs2;
+            const csgo = elo.csgo;
+            resultado = `CS2: ELO -> ${cs2[0]}, LVL -> ${cs2[1]} / CSGO: ELO -> ${csgo[0]}, LVL -> ${csgo[1]}`;
+        } catch (error) {
+            resultado = "User not found";
+        }
+		client.chat.sendFriendMessage(steamID, resultado);
     }
 
     console.log("Friend message from " + steamID.getSteam3RenderedID() + ": " + message);
