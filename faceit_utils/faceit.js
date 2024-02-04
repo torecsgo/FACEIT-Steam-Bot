@@ -71,6 +71,35 @@ async function calcularElo(matchId) {
     return puntuacion;
 }
 
+// Obtener player info
+
+async function obtenerElo(user) {
+    const url = `https://open.faceit.com/data/v4/players?nickname=${user}&game=cs2`;
+    const headers = {
+        'accept': 'application/json',
+        'Authorization': FACEIT_KEY
+    };
+    try {
+        const response = await axios.get(url, { headers });
+
+        let cs2 = [];
+        cs2[0] = response.data.games.cs2.faceit_elo;
+        cs2[1] = response.data.games.cs2.skill_level;
+
+        let csgo = [];
+        csgo[0] = response.data.games.csgo.faceit_elo;
+        csgo[1] = response.data.games.csgo.skill_level;
+
+        const ELO = {
+            cs2: cs2,
+            csgo: csgo
+        }
+        return ELO;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 
 
@@ -78,5 +107,6 @@ module.exports = {
     obtenerInfo: obtenerInfo,
     obtenerId: obtenerId,
     obtenerIp: obtenerIp,
-    calcularElo: calcularElo
+    calcularElo: calcularElo,
+    obtenerElo: obtenerElo
 };

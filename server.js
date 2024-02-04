@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const config = require("./config.json");
 
 const faceit_utils = require("./faceit_utils/faceit");
-
 const toreSteamId = config.toreSteamId;
 const steamLogOnOptions = config.steamLogOnOptions;
 const partidas = config.partidas;
@@ -25,6 +24,17 @@ client.on('loggedOn', async() => {
     client.setPersona(SteamUser.EPersonaState.Online);
     client.gamesPlayed(730);
 });
+
+client.on('friendMessage', async function(steamID, message) {
+    const [comando, argumento] = message.split(' ');
+    if (comando === "!faceit") {
+        require("./comandos/faceit").obtenerPlayerElo(steamID, argumento);
+    }
+
+    console.log("Friend message from " + steamID.getSteam3RenderedID() + ": " + message);
+});
+
+
 
 // POST endpoint to receive webhooks
 app.post('/webhook', (req, res) => {
