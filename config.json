@@ -1,0 +1,13 @@
+{
+    "partidas": {
+        "READY": "match_status_ready",
+        "CREADO": "match_status_created",
+        "FINALIZADO": "match_status_finished"
+    },
+    "steamLogOnOptions": {
+        "accountName": "",
+        "password": ""
+    },
+    "FACEIT_KEY": "",
+    "toreSteamId": ""
+}
